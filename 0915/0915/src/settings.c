@@ -160,7 +160,9 @@ void global_data_reset_param_defaults(void){
 	global_data.param_access[PARAM_VIDEO_ONLY] = READ_WRITE;
 
 	//global_data.param[PARAM_VIDEO_RATE] = 150;
-    global_data.param[PARAM_VIDEO_RATE] = 25;
+    global_data.param[PARAM_VIDEO_RATE] = 25;//Take care that it is important.
+    //When we change the parameter it will change the image.
+    //For example,if we increase it,the flash will be more quick.
 	strcpy(global_data.param_name[PARAM_VIDEO_RATE], "VIDEO_RATE");
 	global_data.param_access[PARAM_VIDEO_RATE] = READ_WRITE;
 
