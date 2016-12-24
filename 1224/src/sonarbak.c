@@ -81,11 +81,6 @@ float sonar_raw = 0.0f;  // m
 float sonar_mode = 0.0f;
 float sonar_valid = false;				/**< the mode of all sonar measurements */
 
-//Start change
-float temp_sonar_post_x=0.0f;
-float temp_x_new=0.0f;
-//End change
-
 /**
   * @brief  Triggers the sonar to measure the next value
   *
@@ -198,23 +193,6 @@ bool sonar_read(float* sonar_value_filtered, float* sonar_value_raw)
 		sonar_valid = false;
 	}
 
-    //Start change
-    if(sonar_raw-temp_x_new>0.15f||temp_x_new-sonar_raw>0.15f)//Start
-    {
-        sonar_raw=(temp_x_new*5.0f+sonar_raw*5.0f)/10;
-    }
-    temp_x_new=sonar_raw;//
-    if(x_post-temp_sonar_post_x>0.1f||temp_sonar_post_x-x_post>0.1f)//Change
-    {
-        x_post=temp_sonar_post_x;
-    }
-    temp_sonar_post_x=x_post;
-    if(temp_x_new>=SONAR_MIN&&temp_x_new<=SONAR_MAX)
-    {
-        sonar_valid=true;
-    }
-    //End change
-    
 	*sonar_value_filtered = x_post;
 	*sonar_value_raw = sonar_raw;
 

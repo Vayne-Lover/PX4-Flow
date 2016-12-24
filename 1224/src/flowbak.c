@@ -402,17 +402,6 @@ uint8_t compute_flow(uint8_t *image1, uint8_t *image2, float x_rate, float y_rat
 	const int16_t winmax = SEARCH_SIZE;
 	const uint16_t hist_size = 2*(winmax-winmin+1)+1;
 
-    
-    //Start change
-    float tempx1=0.0f;//
-    float tempx2=0.0f;//
-    float tempx3=0.0f;//
-    float tempy1=0.0f;//
-    float tempy2=0.0f;//
-    float tempy3=0.0f;//
-    //End change
-    
-    
 	/* variables */
         uint16_t pixLo = SEARCH_SIZE + 1;
         uint16_t pixHi = FRAME_SIZE - (SEARCH_SIZE + 1) - TILE_SIZE;
@@ -643,16 +632,6 @@ uint8_t compute_flow(uint8_t *image1, uint8_t *image2, float x_rate, float y_rat
 				histflowx = (hist_x_value/hist_x_weight - (winmax-winmin+1)) / 2.0f ;
 				histflowy = (hist_y_value/hist_y_weight - (winmax-winmin+1)) / 2.0f;
 
-                //Start change
-                tempx3=tempx2;//
-                tempx2=tempx1;//
-                tempx1=histflowx;//
-                
-                tempy3=tempy2;//
-                tempy2=tempy1;//
-                tempy1=histflowy;//
-                //End change
-                
 			}
 			else
 			{
@@ -679,16 +658,6 @@ uint8_t compute_flow(uint8_t *image1, uint8_t *image2, float x_rate, float y_rat
 				histflowx /= meancount_x;
 				histflowy /= meancount_y;
 
-                
-                //Start change
-                tempx3=tempx2;//
-                tempx2=tempx1;//
-                tempx1=histflowx;//
-                
-                tempy3=tempy2;//
-                tempy2=tempy1;//
-                tempy1=histflowy;//
-                //End change
 			}
 
 			/* compensate rotation */
@@ -778,14 +747,9 @@ uint8_t compute_flow(uint8_t *image1, uint8_t *image2, float x_rate, float y_rat
 	float scale_x = 1.0f;
 	float scale_y = 1.0f;
 
-    
-    //Start change #Soft the waves
-    
-    *pixel_flow_x = (*pixel_flow_x*1+tempx1*1+tempx2*1+tempx3*1)/4*scale_x;
-    *pixel_flow_y = (*pixel_flow_y*1+tempy1*1+tempy2*1+tempy3*1)/4*scale_y;
-	//*pixel_flow_x = *pixel_flow_x * scale_x;
-	//*pixel_flow_y = *pixel_flow_y * scale_y;
-    //End change
+	*pixel_flow_x = *pixel_flow_x * scale_x;
+	*pixel_flow_y = *pixel_flow_y * scale_y;
+
 	/* calc quality */
 	uint8_t qual = (uint8_t)(meancount * 255 / (NUM_BLOCKS*NUM_BLOCKS));
 

@@ -159,8 +159,8 @@ void global_data_reset_param_defaults(void){
 	strcpy(global_data.param_name[PARAM_VIDEO_ONLY], "VIDEO_ONLY");
 	global_data.param_access[PARAM_VIDEO_ONLY] = READ_WRITE;
 
-	//global_data.param[PARAM_VIDEO_RATE] = 30;
-    global_data.param[PARAM_VIDEO_RATE] = 30;
+	global_data.param[PARAM_VIDEO_RATE] = 30;
+    //global_data.param[PARAM_VIDEO_RATE] = 150;
 	strcpy(global_data.param_name[PARAM_VIDEO_RATE], "VIDEO_RATE");
 	global_data.param_access[PARAM_VIDEO_RATE] = READ_WRITE;
 
@@ -169,12 +169,14 @@ void global_data_reset_param_defaults(void){
 	global_data.param_access[PARAM_MAX_FLOW_PIXEL] = READ_ONLY;
 
 //	global_data.param[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD] = 8 * 8 * 20;
-	global_data.param[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD] = 1400; // threshold is irrelevant with this value//
+	global_data.param[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD] = 1400; // threshold is irrelevant with this value change to 2500 from 5000
+//  global_data.param[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD] = 2500;
 	strcpy(global_data.param_name[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD], "BFLOW_V_THLD");
 	global_data.param_access[PARAM_BOTTOM_FLOW_VALUE_THRESHOLD] = READ_WRITE;
 
 //	global_data.param[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD] = 5000;
-	global_data.param[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD] = 10; // threshold is irrelevant with this value//
+	global_data.param[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD] = 10; // threshold is irrelevant with this value change to 15 from 30
+//  global_data.param[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD] = 15;
 	strcpy(global_data.param_name[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD], "BFLOW_F_THLD");
 	global_data.param_access[PARAM_BOTTOM_FLOW_FEATURE_THRESHOLD] = READ_WRITE;
 
@@ -196,7 +198,8 @@ void global_data_reset_param_defaults(void){
 	strcpy(global_data.param_name[PARAM_BOTTOM_FLOW_WEIGHT_NEW], "BFLOW_W_NEW");
 	global_data.param_access[PARAM_BOTTOM_FLOW_WEIGHT_NEW] = READ_WRITE;
 
-	global_data.param[PARAM_BOTTOM_FLOW_SERIAL_THROTTLE_FACTOR] = 5.0f;//
+	global_data.param[PARAM_BOTTOM_FLOW_SERIAL_THROTTLE_FACTOR] = 5.0f;
+//  global_data.param[PARAM_BOTTOM_FLOW_SERIAL_THROTTLE_FACTOR] = 10.0f;
 	strcpy(global_data.param_name[PARAM_BOTTOM_FLOW_SERIAL_THROTTLE_FACTOR], "BFLOW_THROTT");
 	global_data.param_access[PARAM_BOTTOM_FLOW_SERIAL_THROTTLE_FACTOR] = READ_WRITE;
 
