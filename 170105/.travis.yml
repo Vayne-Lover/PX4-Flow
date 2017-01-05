@@ -1,0 +1,71 @@
+language: cpp
+
+# use travis-ci docker based infrastructure
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.ccache
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - build-essential
+    - ccache
+    - cmake
+    - genromfs
+    - libc6-i386
+    - libncurses5-dev
+    - python-argparse
+    - python-empy
+    - python-serial
+    - s3cmd
+    - texinfo
+    - zlib1g-dev
+
+before_script:
+# General toolchain dependencies
+  - pushd .
+  - cd ~
+  - wget https://launchpadlibrarian.net/186124160/gcc-arm-none-eabi-4_8-2014q3-20140805-linux.tar.bz2
+  - tar -jxf gcc-arm-none-eabi-4_8-2014q3-20140805-linux.tar.bz2
+  - exportline="export PATH=$HOME/gcc-arm-none-eabi-4_8-2014q3/bin:\$PATH"
+  - if grep -Fxq "$exportline" ~/.profile; then echo nothing to do ; else echo $exportline >> ~/.profile; fi
+  - . ~/.profile
+  - popd
+# setup ccache
+  - mkdir -p ~/bin
+  - ln -s /usr/bin/ccache ~/bin/arm-none-eabi-gcc
+  - export PATH=~/bin:$PATH
+
+env:
+  global:
+   - secure: "IukUGn1p3sl0X0EqL51GOoxEPA3WQrOolvtUY5jnNyTJEb97RxWkneqJEsQu0Z5HAIrqMGb5AOQiXtn01NyVuU8yZCF/GuUeikIip1X1y9cyt1NIl7rndse3SZ/8CVj0g2MdsC5ViQu7sUVqdlQ9gzxMeJQfyKHdGz77V+pcItg="
+   - secure: "GcxEQk+mE/1rdiP6Uac7YVr8kj5ILG55tXGfX322ITt/T/6IgONMJvgeb7seQsxk+s/UMeKQZ3iN8jUMk1FWjLZufVOhXwh8+pvIfSU4Sf+Vvr80kxXCa45CkttN4Qfqh5oP0VBsnS0cUsWO+XjlI//Qj17K3dnwVvALUcn9lHg="
+   - PX4_AWS_BUCKET=px4-travis
+
+script:
+ - ccache -z
+ - arm-none-eabi-gcc --version
+ - cmake .
+ - make
+ - ccache -s
+ - zip Flow.zip px4flow.px4
+
+after_script:
+  - git clone git://github.com/PX4/CI-Tools.git
+  - ./CI-Tools/s3cmd-configure
+# upload newest build for this branch with s3 index
+  - ./CI-Tools/s3cmd-put px4flow.px4 CI-Tools/directory/index.html Flow/$TRAVIS_BRANCH/
+# archive newest build by date with s3 index
+  - ./CI-Tools/s3cmd-put Flow.zip archives/Flow/$TRAVIS_BRANCH/`date "+%Y-%m-%d"`-$TRAVIS_BUILD_ID/
+  - ./CI-Tools/s3cmd-put CI-Tools/directory/index.html archives/Flow/$TRAVIS_BRANCH/
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/2b9c4a4cb2211f8befba
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
